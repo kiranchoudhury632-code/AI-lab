@@ -1,41 +1,36 @@
-‎bfs.py‎
-+44
-Lines changed: 44 additions & 0 deletions
-Original file line number	Diff line number	Diff line change
-@@ -0,0 +1,44 @@
-def bfs(graph,start_node):
-    visited=[]
-    queue=[start_node]
-       
+def bfs(graph, start_node):
+    visited = []
+    queue = [start_node]
     while queue:
-        current_node=queue.pop(0)
+        current_node = queue.pop(0)
         if current_node not in visited:
-            print(f"exploring_node:{current_node}")
+            print(f"Exploring node: {current_node}")
             visited.append(current_node)
-            #.get()prvents error if a node has no outgoing edges
-        for neighour in graph.get(current_node,[]):
-                if neighour not in visited and neighour not in queue:
-                        queue.append(neighour)
-                return visited
-#_ _ _ user input section _ _ _
-print("_ _ _ build your group _ _ _")
-student_graph={}
-#get the total number of connections
-num_edges =int(input("how many edges(connecton) does your graph have?"))
-print("enter each edge separate by a space (e.g.,A B):")
-for i in range (num_edges):
-    #readd the input and split it into two variables
-    u,v = input (f"edge{i+1}:").split()
-    #initialize the lists if the nodes don't exist yet
+
+            # .get() prevents an error if a node has no outgoing edges
+            for neighbour in graph.get(current_node, []):
+                if neighbour not in visited and neighbour not in queue:
+                    queue.append(neighbour)
+    return visited
+# ----- User Input Section -----
+print("----- Build Your Graph -----")
+student_graph = {}
+# Get the total number of edges
+num_edges = int(input("How many edges (connections) does your graph have? "))
+print("Enter each edge separated by a space (e.g., A B):")
+for i in range(num_edges):
+    u, v = input(f"Edge {i+1}: ").split()
+    # Initialize lists if nodes don't exist
     if u not in student_graph:
-        student_graph[u]=[]
+        student_graph[u] = []
     if v not in student_graph:
-        student_graph[v]=[]
-      #add the connection (undirected graph)      
+        student_graph[v] = []
+    # Add connection (Undirected Graph)
     student_graph[u].append(v)
     student_graph[v].append(u)
-       #get the starting piont
-start =input("enter your strting node for bfs:")
-print(f"\nyour graph dictionary: {student_graph}")
-print("starting bfs traversal . . .")
-bfs(student_graph,start)
+# Get the starting node
+start = input("Enter your starting node for BFS: ")
+print("\nYour Graph Dictionary:", student_graph)
+print("Starting BFS Traversal...")
+visited_nodes = bfs(student_graph, start)
+print("BFS Traversal:", visited_nodes)
