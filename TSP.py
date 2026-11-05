@@ -1,46 +1,46 @@
-# Travelling Salesman Problem (TSP)
+from itertools import permutations
 
-n = 4
+# Function to solve TSP
+def travelling_salesman(graph, start):
+    cities = list(range(len(graph)))
+    cities.remove(start)
+    min_cost = float('inf')
+    best_path = None
 
-# Distance matrix
-cost = [
-    [0, 10, 15, 20],
-    [10, 0, 35, 25],
-    [15, 35, 0, 30],
-    [20, 25, 30, 0]
-]
+    # Generate all possible tours
+    for perm in permutations(cities):
+        current_cost = 0
+        current_path = [start]
+        k = start
 
-visited = [False] * n
-visited[0] = True
+        for city in perm:
+            current_cost += graph[k][city]
+            current_path.append(city)
+            k = city
 
-min_cost = float('inf')
-best_path = []
+        current_cost += graph[k][start]
+        current_path.append(start)
 
-def tsp(city, count, current_cost, path):
-    global min_cost, best_path
+        if current_cost < min_cost:
+            min_cost = current_cost
+            best_path = current_path
 
-    if count == n:
-        total_cost = current_cost + cost[city][0]
+    return best_path, min_cost
 
-        if total_cost < min_cost:
-            min_cost = total_cost
-            best_path = path + [0]
-        return
 
-    for next_city in range(n):
-        if not visited[next_city]:
-            visited[next_city] = True
+# Main Program
+n = int(input("Enter the number of cities: "))
 
-            tsp(
-                next_city,
-                count + 1,
-                current_cost + cost[city][next_city],
-                path + [next_city]
-            )
+print("Enter the cost matrix:")
+graph = []
 
-            visited[next_city] = False
+for i in range(n):
+    row = list(map(int, input().split()))
+    graph.append(row)
 
-tsp(0, 1, 0, [0])
+start = int(input("Enter the starting city (0 to {}): ".format(n - 1)))
 
-print("Shortest Path:", " -> ".join(map(str, best_path)))
-print("Minimum Cost:", min_cost)
+path, cost = travelling_salesman(graph, start)
+
+print("\nOptimal Path:", " -> ".join(map(str, path)))
+print("Minimum Cost:", cost)
